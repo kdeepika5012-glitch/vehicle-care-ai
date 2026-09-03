@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VehicleCare AI</title><link rel="stylesheet" href="/static/style.css"></head>
+<body><div class="app">
+<header><div class="logo">🚗</div><div><h1>VehicleCare AI</h1><p>Vehicle Maintenance & Troubleshooting Assistant</p></div></header>
+<main id="chatBox"><div class="message bot"><strong>VehicleCare AI</strong><p>Hi! 👋 Ask me about your car or bike problem, maintenance, dashboard warnings, battery, tyres, engine oil or fuel efficiency.</p></div></main>
+<div class="suggestions">
+<button onclick="useQuestion('My bike is not starting. What could be the reason?')">🏍️ Bike Not Starting</button>
+<button onclick="useQuestion('What does the engine warning light mean?')">⚠️ Warning Light</button>
+<button onclick="useQuestion('How often should I change engine oil?')">🛢️ Engine Oil</button>
+<button onclick="useQuestion('How can I improve my vehicle fuel efficiency?')">⛽ Fuel Saving</button>
+</div>
+<form id="chatForm"><input id="messageInput" placeholder="Ask about your car or bike..." autocomplete="off" required><button type="submit">Send ➤</button></form>
+<footer>VehicleCare AI • Maintenance & educational guidance</footer></div>
+<script>
+const form=document.getElementById("chatForm"),input=document.getElementById("messageInput"),chatBox=document.getElementById("chatBox");
+function addMessage(text,sender){const d=document.createElement("div");d.className="message "+sender;d.innerHTML="<strong>"+(sender==="bot"?"VehicleCare AI":"You")+"</strong><p></p>";d.querySelector("p").textContent=text;chatBox.appendChild(d);chatBox.scrollTop=chatBox.scrollHeight}
+function useQuestion(q){input.value=q;input.focus()}
+form.addEventListener("submit",async e=>{e.preventDefault();const message=input.value.trim();if(!message)return;addMessage(message,"user");input.value="";
+const t=document.createElement("div");t.className="message bot";t.id="typing";t.innerHTML="<strong>VehicleCare AI</strong><p>Thinking...</p>";chatBox.appendChild(t);chatBox.scrollTop=chatBox.scrollHeight;
+try{const r=await fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});const data=await r.json();document.getElementById("typing")?.remove();addMessage(data.reply||"No response received.","bot")}
+catch(err){document.getElementById("typing")?.remove();addMessage("Unable to connect to the server. Please try again.","bot")}});</script>
+</body></html>
