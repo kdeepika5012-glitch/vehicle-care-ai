@@ -11,7 +11,7 @@ if not api_key:
     raise RuntimeError("GEMINI_API_KEY is not set.")
 
 client=genai.Client(api_key=api_key)
-MODEL="gemini-3.5-flash"
+MODEL="gemini-3.1-flash"
 
 SYSTEM_PROMPT="""
 You are VehicleCare AI, a vehicle maintenance and troubleshooting assistant.
